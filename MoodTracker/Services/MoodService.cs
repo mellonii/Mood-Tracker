@@ -12,9 +12,9 @@ public class MoodService(MoodRepository moodRepository)
         moodRepository.Add(new MoodEntry(mood, comment, date));
     }
 
-    internal MoodEntry[] AllEntries()
+    internal List<MoodEntry> GetAll()
     {
-        return moodRepository.AllEntries();
+        return moodRepository.GetAll();
     }
 
     internal void EditEntry(int id, Models.Mood mood, string comment, DateTimeOffset date)
@@ -31,5 +31,10 @@ public class MoodService(MoodRepository moodRepository)
     {
         var moodEntry = moodRepository.GetEntryById(id);
         moodRepository.Delete(moodEntry);
+    }
+
+    internal MoodEntry Get(int id)
+    {
+        return moodRepository.GetEntryById(id);
     }
 }

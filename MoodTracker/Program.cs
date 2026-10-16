@@ -2,6 +2,9 @@
 // csproj	Содержит метаданные конфигурации для проекта.
 // http	Содержит конфигурацию для тестирования ИНТЕРФЕЙСов REST API.
 
+using MoodTracker.Repository;
+using MoodTracker.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -9,6 +12,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+
+builder.Services.AddScoped<MoodService>();
+builder.Services.AddScoped<MoodRepository>();
 
 var app = builder.Build();
 

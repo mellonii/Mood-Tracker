@@ -1,6 +1,11 @@
 @MoodTracker_HostAddress = http://localhost:5253
 
-GET {{MoodTracker_HostAddress}}/weatherforecast/
+GET {{MoodTracker_HostAddress}}/Mood/
+Accept: application/json
+
+###
+
+GET {{MoodTracker_HostAddress}}/Mood/1
 Accept: application/json
 
 ###

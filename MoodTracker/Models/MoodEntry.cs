@@ -1,14 +1,14 @@
 namespace MoodTracker.Models;
 
-internal class MoodEntry
+public class MoodEntry
 {
     private int _id;
     private readonly DateTimeOffset _createdAt;
     
-    public DateTimeOffset Date;
-    public Mood Mood;
-    public string Comment;
-    public DateTimeOffset UpdatedAt;
+    public DateTimeOffset Date { get; set; }
+    public Mood Mood { get; set; }
+    public string Comment { get; set; }
+    public DateTimeOffset UpdatedAt { get; set; }
 
     public MoodEntry()
     {

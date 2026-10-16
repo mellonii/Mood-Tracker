@@ -10,7 +10,7 @@ public class MoodRepository
         Console.WriteLine(moodEntry.Mood);
     }
 
-    internal MoodEntry[] AllEntries()
+    internal List<MoodEntry> GetAll()
     {
         return [new MoodEntry()];
     }

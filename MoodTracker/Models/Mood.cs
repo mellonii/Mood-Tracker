@@ -1,6 +1,6 @@
 namespace MoodTracker.Models;
 
-internal enum Mood
+public enum Mood
 {
     Awful,
     Bad,
