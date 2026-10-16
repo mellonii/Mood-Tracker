@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MoodTracker.Controllers;
 
+// папка Controllers содержит классы для открытых методов, предоставляемых как конечные точки HTTP.
+
 [ApiController]
 [Route("[controller]")]
 public class WeatherForecastController : ControllerBase
