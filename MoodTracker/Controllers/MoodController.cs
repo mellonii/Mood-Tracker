@@ -29,9 +29,33 @@ public class MoodController : ControllerBase
         return moodEntry;
     }
 
-    // POST action
+    [HttpPost]
+    public IActionResult Create(MoodEntry moodEntry)
+    {            
+        _moodService.Create(moodEntry);
+        return CreatedAtAction(nameof(Get), new { id = moodEntry.id }, moodEntry);
+    }
 
-    // PUT action
+    [HttpPut("{id}")]
+    public IActionResult Update(int id, MoodEntry moodEntry)
+    {
+        if (id != moodEntry.id)
+            return BadRequest();
+           
+        var existingEntry = _moodService.Get(id);
+        if(existingEntry is null) return NotFound();
+   
+        _moodService.Update(id, moodEntry);           
+        return NoContent();
+    }
 
-    // DELETE action
+    [HttpDelete("{id}")]
+    public IActionResult Delete(int id)
+    {
+        var moodEntry = _moodService.Get(id);
+        if (moodEntry is null) return NotFound();
+       
+        _moodService.Delete(id);
+        return NoContent();
+    }
 }

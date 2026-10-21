@@ -2,9 +2,9 @@ namespace MoodTracker.Models;
 
 public class MoodEntry
 {
-    private int _id;
     private readonly DateTimeOffset _createdAt;
     
+    public readonly int id;
     public DateTimeOffset Date { get; set; }
     public Mood Mood { get; set; }
     public string Comment { get; set; }

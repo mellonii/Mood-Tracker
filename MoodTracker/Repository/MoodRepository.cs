@@ -5,7 +5,7 @@ namespace MoodTracker.Repository;
 public class MoodRepository
 {
     // работа с данными
-    internal void Add(MoodEntry moodEntry)
+    internal void Create(MoodEntry moodEntry)
     {
         Console.WriteLine(moodEntry.Mood);
     }
@@ -21,7 +21,7 @@ public class MoodRepository
         return new MoodEntry();
     }
 
-    internal void Edit(MoodEntry moodEntry)
+    internal void Update(int id, MoodEntry moodEntry)
     {
         Console.WriteLine("Отредактировано!");
     }

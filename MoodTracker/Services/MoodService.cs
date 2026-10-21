@@ -6,10 +6,9 @@ namespace MoodTracker.Services;
 public class MoodService(MoodRepository moodRepository)
 {
     // работа с выводом
-    internal void AddEntry(Mood mood, string comment, DateTimeOffset date = default)
+    internal void Create(MoodEntry moodEntry)
     {
-        if (date == default) date = DateTimeOffset.Now;
-        moodRepository.Add(new MoodEntry(mood, comment, date));
+        moodRepository.Create(moodEntry);
     }
 
     internal List<MoodEntry> GetAll()
@@ -17,17 +16,12 @@ public class MoodService(MoodRepository moodRepository)
         return moodRepository.GetAll();
     }
 
-    internal void EditEntry(int id, Models.Mood mood, string comment, DateTimeOffset date)
+    internal void Update(int id, MoodEntry moodEntry)
     {
-        var moodEntry = moodRepository.GetEntryById(id);
-        moodEntry.Comment = comment;
-        moodEntry.Date = date;
-        moodEntry.Mood = mood;
-        moodEntry.UpdatedAt = DateTimeOffset.Now;
-        moodRepository.Edit(moodEntry);
+        moodRepository.Update(id, moodEntry);
     }
 
-    internal void DeleteEntry(int id)
+    internal void Delete(int id)
     {
         var moodEntry = moodRepository.GetEntryById(id);
         moodRepository.Delete(moodEntry);

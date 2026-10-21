@@ -9,3 +9,37 @@ GET {{MoodTracker_HostAddress}}/Mood/1
 Accept: application/json
 
 ###
+
+POST {{MoodTracker_HostAddress}}/Mood/
+Content-Type: application/json
+
+{
+  "Comment": "Веселый старый комментарий",
+  "Mood": "Mood.Great"
+}
+
+###
+
+PUT {{MoodTracker_HostAddress}}/Mood/1
+Content-Type: application/json
+
+{
+  "id": 1,
+  "Comment": "Новый комментарий"
+}
+
+###
+
+GET {{MoodTracker_HostAddress}}/Mood/1
+Accept: application/json
+
+###
+
+DELETE {{MoodTracker_HostAddress}}/Mood/1
+
+###
+
+GET {{MoodTracker_HostAddress}}/Mood/
+Accept: application/json
+
+###
