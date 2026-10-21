@@ -10,8 +10,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+builder.Services.AddEndpointsApiExplorer(); // добавляем генератор Swagger в коллекцию служб /swagger/v1/swagger.json
+builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<MoodService>();
 builder.Services.AddScoped<MoodRepository>();
@@ -21,7 +21,12 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+    app.UseSwagger();
+    app.UseSwaggerUI(options => // UseSwaggerUI is called only in Development.
+    {
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+        options.RoutePrefix = string.Empty; // http://localhost:5000/ вместо http://localhost:5000/swagger
+    });
 }
 
 app.UseHttpsRedirection();
