@@ -20,12 +20,11 @@ public class MoodController : ControllerBase
         _moodService.GetAll();
 
     [HttpGet("{id}")]
-    public ActionResult<MoodEntry> Get(int id)
+    public ActionResult<MoodEntry> Get(long id)
     {
         var moodEntry = _moodService.Get(id);
         
         if(moodEntry == null) return NotFound();
-
         return moodEntry;
     }
 
@@ -33,24 +32,24 @@ public class MoodController : ControllerBase
     public IActionResult Create(MoodEntry moodEntry)
     {            
         _moodService.Create(moodEntry);
-        return CreatedAtAction(nameof(Get), new { id = moodEntry.id }, moodEntry);
+        return CreatedAtAction(nameof(Get), new { id = moodEntry.Id }, moodEntry);
     }
 
     [HttpPut("{id}")]
-    public IActionResult Update(int id, MoodEntry moodEntry)
+    public IActionResult Update(long id, MoodEntry moodEntry)
     {
-        if (id != moodEntry.id)
+        if (id != moodEntry.Id)
             return BadRequest();
            
         var existingEntry = _moodService.Get(id);
         if(existingEntry is null) return NotFound();
    
-        _moodService.Update(id, moodEntry);           
+        _moodService.Update(moodEntry);           
         return NoContent();
     }
 
     [HttpDelete("{id}")]
-    public IActionResult Delete(int id)
+    public IActionResult Delete(long id)
     {
         var moodEntry = _moodService.Get(id);
         if (moodEntry is null) return NotFound();

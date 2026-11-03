@@ -16,18 +16,17 @@ public class MoodService(MoodRepository moodRepository)
         return moodRepository.GetAll();
     }
 
-    internal void Update(int id, MoodEntry moodEntry)
+    internal void Update(MoodEntry moodEntry)
     {
-        moodRepository.Update(id, moodEntry);
+        moodRepository.Update(moodEntry);
     }
 
-    internal void Delete(int id)
+    internal void Delete(long id)
     {
-        var moodEntry = moodRepository.GetEntryById(id);
-        moodRepository.Delete(moodEntry);
+        moodRepository.Delete(id);
     }
 
-    internal MoodEntry Get(int id)
+    internal MoodEntry? Get(long id)
     {
         return moodRepository.GetEntryById(id);
     }

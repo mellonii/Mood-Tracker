@@ -15,7 +15,7 @@ Content-Type: application/json
 
 {
   "Comment": "Веселый старый комментарий",
-  "Mood": "Mood.Great"
+  "Mood": "Great"
 }
 
 ###

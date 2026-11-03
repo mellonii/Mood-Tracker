@@ -2,11 +2,11 @@
 -- 1. Тип настроения
 -- -----------------------------------------------------------------------------
 CREATE TYPE mood_level AS ENUM (
-    'awful',     -- ужасно
-    'bad',       -- плохо
-    'neutral',   -- норм
-    'good',      -- хорошо
-    'great'      -- отлично
+    'Awful',     -- ужасно
+    'Bad',       -- плохо
+    'Neutral',   -- норм
+    'Good',      -- хорошо
+    'Great'      -- отлично
 );
 
 
@@ -62,12 +62,11 @@ INSERT INTO reasons (code, label) VALUES
 -- -----------------------------------------------------------------------------
 CREATE TABLE mood_entries (
                               id          BIGSERIAL   PRIMARY KEY,
-                              user_id     BIGINT      NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-                              day_id      BIGINT      NOT NULL REFERENCES days(id)  ON DELETE CASCADE,
+                              -- user_id     BIGINT      NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+                              -- day_id      BIGINT      NOT NULL REFERENCES days(id)  ON DELETE CASCADE,
 
     -- Пользовательские поля
-                              entry_date  DATE        NOT NULL,            -- за какой день запись (может быть вчера)
-                              entry_time  TIME        NOT NULL,            -- в какой момент отметили
+                              mood_at     TIMESTAMPTZ NOT NULL DEFAULT NOW(),
                               mood        mood_level  NOT NULL,
                               comment     TEXT,                            -- необязательный
 
@@ -80,7 +79,7 @@ CREATE TABLE mood_entries (
 
 -- Главный индекс для экрана "история": новые сверху
 CREATE INDEX idx_mood_entries_user_date_time
-    ON mood_entries(user_id, entry_date DESC, entry_time DESC);
+    ON mood_entries(user_id, mood_at DESC);
 
 -- Индекс для связи с днём (для dashboard "все записи за день")
 CREATE INDEX idx_mood_entries_day_id ON mood_entries(day_id);
@@ -96,19 +95,3 @@ CREATE TABLE mood_entry_reasons (
 
 -- Обратный индекс: "найти все записи, где причиной был спорт"
 CREATE INDEX idx_mood_entry_reasons_reason_id ON mood_entry_reasons(reason_id);
-
--- -----------------------------------------------------------------------------
--- 7. Триггер: авто-обновление updated_at при редактировании
--- -----------------------------------------------------------------------------
-CREATE OR REPLACE FUNCTION set_updated_at()
-RETURNS TRIGGER AS $$
-BEGIN
-    NEW.updated_at = NOW();
-RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE TRIGGER trg_mood_entries_updated_at
-    BEFORE UPDATE ON mood_entries
-    FOR EACH ROW
-    EXECUTE FUNCTION set_updated_at();

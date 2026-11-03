@@ -6,6 +6,5 @@ public enum Mood
     Bad,
     Neutral,
     Good,
-    Great,
-    Unknown
+    Great
 }

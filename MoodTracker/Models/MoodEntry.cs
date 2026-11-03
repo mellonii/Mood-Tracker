@@ -2,41 +2,45 @@ namespace MoodTracker.Models;
 
 public class MoodEntry
 {
-    private readonly DateTimeOffset _createdAt;
-    
-    public readonly int id;
-    public DateTimeOffset Date { get; set; }
+    public long Id { get; set; }
+    public DateTimeOffset MoodAt { get; set; }
     public Mood Mood { get; set; }
     public string Comment { get; set; }
+    public DateTimeOffset CreatedAt { get; set; }
     public DateTimeOffset UpdatedAt { get; set; }
 
     public MoodEntry()
     {
-        Date = DateTimeOffset.Now;
-        Mood = Mood.Unknown;
+        Mood = Mood.Neutral;
         Comment = "Неизвестный комментарий";
         
-        _createdAt = DateTimeOffset.Now;
-        UpdatedAt = DateTimeOffset.Now;
-    }
-
-    public MoodEntry(Mood mood, string comment, DateTimeOffset date)
-    {
-        _createdAt = DateTimeOffset.Now;
-        
-        Date = date;
-        Mood = mood;
-        Comment = comment;
-        UpdatedAt = _createdAt;
+        var dateTime = DateTimeOffset.Now.ToUniversalTime();
+        MoodAt = dateTime;
+        CreatedAt = dateTime;
+        UpdatedAt = dateTime;
     }
     
-    public MoodEntry(Mood mood, string comment, DateTimeOffset date, DateTimeOffset createdAt, DateTimeOffset updatedAt)
+    public MoodEntry(long id, Mood mood, string comment = "", DateTimeOffset moodAt = default, DateTimeOffset createdAt = default, DateTimeOffset updatedAt = default)
     {
-        _createdAt = createdAt;
+        Id = id;
         
-        Date = date;
         Mood = mood;
         Comment = comment;
-        UpdatedAt = updatedAt;
+        
+        var dateTime = DateTimeOffset.Now.ToUniversalTime();
+        MoodAt = moodAt != default ? moodAt.ToUniversalTime() : dateTime;
+        CreatedAt = createdAt != default ? createdAt.ToUniversalTime() : dateTime;
+        UpdatedAt = updatedAt != default ? updatedAt.ToUniversalTime() : dateTime;
+    }
+
+    public MoodEntry(Mood mood, string comment = "", DateTimeOffset moodAt = default, DateTimeOffset createdAt = default, DateTimeOffset updatedAt = default)
+    {
+        Mood = mood;
+        Comment = comment;
+
+        var dateTime = DateTimeOffset.Now.ToUniversalTime();
+        MoodAt = moodAt != default ? moodAt.ToUniversalTime() : dateTime;
+        CreatedAt = createdAt != default ? createdAt.ToUniversalTime() : dateTime;
+        UpdatedAt = updatedAt != default ? updatedAt.ToUniversalTime() : dateTime;
     }
 }
