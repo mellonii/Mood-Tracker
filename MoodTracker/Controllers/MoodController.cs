@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MoodTracker.Services;
 using MoodTracker.Models;
+using MoodTracker.Services.Interfaces;
 
 namespace MoodTracker.Controllers;
 
@@ -8,53 +9,55 @@ namespace MoodTracker.Controllers;
 [Route("[controller]")]
 public class MoodController : ControllerBase
 {
-    private readonly MoodService _moodService;
+    private readonly IMoodService _moodService;
     
-    public MoodController(MoodService moodService)
+    public MoodController(IMoodService moodService)
     {
         _moodService = moodService;
     }
-    
+
     [HttpGet]
-    public ActionResult<List<MoodEntry>> GetAll() =>
-        _moodService.GetAll();
+    public async Task<ActionResult<List<MoodEntry>>> GetAll()
+    {
+        return await _moodService.GetAll();   
+    }
 
     [HttpGet("{id}")]
-    public ActionResult<MoodEntry> Get(long id)
+    public async Task<ActionResult<MoodEntry>> Get(long id)
     {
-        var moodEntry = _moodService.Get(id);
+        var moodEntry = await _moodService.Get(id);
         
         if(moodEntry == null) return NotFound();
         return moodEntry;
     }
 
     [HttpPost]
-    public IActionResult Create(MoodEntry moodEntry)
+    public async Task<IActionResult> Create(MoodEntry moodEntry)
     {            
-        _moodService.Create(moodEntry);
+        await _moodService.Create(moodEntry);
         return CreatedAtAction(nameof(Get), new { id = moodEntry.Id }, moodEntry);
     }
 
     [HttpPut("{id}")]
-    public IActionResult Update(long id, MoodEntry moodEntry)
+    public async Task<IActionResult> Update(long id, MoodEntry moodEntry)
     {
         if (id != moodEntry.Id)
             return BadRequest();
            
-        var existingEntry = _moodService.Get(id);
+        var existingEntry = await _moodService.Get(id);
         if(existingEntry is null) return NotFound();
    
-        _moodService.Update(moodEntry);           
+        await _moodService.Update(moodEntry);           
         return NoContent();
     }
 
     [HttpDelete("{id}")]
-    public IActionResult Delete(long id)
+    public async Task<IActionResult> Delete(long id)
     {
-        var moodEntry = _moodService.Get(id);
+        var moodEntry = await _moodService.Get(id);
         if (moodEntry is null) return NotFound();
        
-        _moodService.Delete(id);
+        await _moodService.Delete(id);
         return NoContent();
     }
 }

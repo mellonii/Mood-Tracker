@@ -1,10 +1,10 @@
 using MoodTracker.Models;
 using Dapper;
 using MoodTracker.ConnectionFactory.Interfaces;
+using MoodTracker.Repository.Interfaces;
 
 namespace MoodTracker.Repository;
-                                                                                                                                                                                                                                                                                                      public class MoodRepository
-{
+public class MoodRepository : IMoodRepository {
     // работа с данными
     private readonly IDbConnectionFactory _factory;
 
@@ -12,8 +12,8 @@ namespace MoodTracker.Repository;
     {
         _factory = factory;
     }
-    
-    internal void Create(MoodEntry moodEntry)
+
+    public async Task Create(MoodEntry moodEntry)
     {
         using var conn = _factory.Create();
         const string sql = """
@@ -30,26 +30,26 @@ namespace MoodTracker.Repository;
             UpdatedAt = DateTime.UtcNow
         };
 
-        moodEntry.Id = conn.ExecuteScalar<long>(sql, param);
+        moodEntry.Id = await conn.ExecuteScalarAsync<long>(sql, param);
     }
 
-    internal List<MoodEntry> GetAll()
+    public async Task<List<MoodEntry>> GetAll()
     {
         using var conn = _factory.Create();
         const string sql = "SELECT * FROM mood_entries";
-        var entry = conn.Query<MoodEntry>(sql);
+        var entry = await conn.QueryAsync<MoodEntry>(sql);
         return entry.ToList();
     }
     
-    internal MoodEntry? GetEntryById(long id)
+    public async Task<MoodEntry?> GetEntryById(long id)
     {
         using var conn = _factory.Create();
         const string sql = "SELECT id, mood::text AS mood, mood_at, comment, created_at, updated_at FROM mood_entries WHERE id = @Id";
-        var entry = conn.QueryFirstOrDefault<MoodEntry>(sql, new { Id = id });
+        var entry = await conn.QueryFirstOrDefaultAsync<MoodEntry>(sql, new { Id = id });
         return entry;
     }
 
-    internal void Update(MoodEntry moodEntry)
+    public async Task Update(MoodEntry moodEntry)
     {
         using var conn = _factory.Create();
         const string sql = """
@@ -71,13 +71,13 @@ namespace MoodTracker.Repository;
             UpdatedAt = DateTime.UtcNow
         };
 
-        conn.Execute(sql, param);
+        await conn.ExecuteAsync(sql, param);
     }
 
-    internal void Delete(long id)
+    public async Task Delete(long id)
     {
         using var conn = _factory.Create();
         const string sql = "DELETE FROM mood_entries WHERE id = @Id";
-        conn.Execute(sql, new { Id = id } );
+        await conn.ExecuteAsync(sql, new { Id = id } );
     }
 }

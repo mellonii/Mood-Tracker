@@ -8,6 +8,8 @@ using MoodTracker.ConnectionFactory;
 using MoodTracker.ConnectionFactory.Interfaces;
 using MoodTracker.Extensions;
 using MoodTracker.Models;
+using MoodTracker.Repository.Interfaces;
+using MoodTracker.Services.Interfaces;
 using Npgsql;
 using Npgsql.NameTranslation;
 
@@ -37,8 +39,8 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 builder.Services.AddEndpointsApiExplorer(); // добавляем генератор Swagger в коллекцию служб /swagger/v1/swagger.json
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddScoped<MoodService>();
-builder.Services.AddScoped<MoodRepository>();
+builder.Services.AddScoped<IMoodService, MoodService>();
+builder.Services.AddScoped<IMoodRepository, MoodRepository>();
 
 var app = builder.Build();
 

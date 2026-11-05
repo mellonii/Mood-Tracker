@@ -1,33 +1,35 @@
 using MoodTracker.Repository;
 using MoodTracker.Models;
+using MoodTracker.Repository.Interfaces;
+using MoodTracker.Services.Interfaces;
 
 namespace MoodTracker.Services;
 
-public class MoodService(MoodRepository moodRepository)
+public class MoodService(IMoodRepository moodRepository) : IMoodService
 {
     // работа с выводом
-    internal void Create(MoodEntry moodEntry)
+    public async Task Create(MoodEntry moodEntry)
     {
-        moodRepository.Create(moodEntry);
+        await moodRepository.Create(moodEntry);
     }
 
-    internal List<MoodEntry> GetAll()
+    public async Task<List<MoodEntry>> GetAll()
     {
-        return moodRepository.GetAll();
+        return await moodRepository.GetAll();
     }
 
-    internal void Update(MoodEntry moodEntry)
+    public async Task Update(MoodEntry moodEntry)
     {
-        moodRepository.Update(moodEntry);
+        await moodRepository.Update(moodEntry);
     }
 
-    internal void Delete(long id)
+    public async Task Delete(long id)
     {
-        moodRepository.Delete(id);
+        await moodRepository.Delete(id);
     }
 
-    internal MoodEntry? Get(long id)
+    public async Task<MoodEntry?> Get(long id)
     {
-        return moodRepository.GetEntryById(id);
+        return await moodRepository.GetEntryById(id);
     }
 }
